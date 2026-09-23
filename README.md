@@ -89,3 +89,33 @@ También se verificó en el navegador el recorrido crear → consultar → edita
 ## Archivos privados
 
 `.env`, `vendor`, `node_modules` y los registros están excluidos de Git. No agregues tokens ni credenciales al repositorio. `.env.example` contiene únicamente valores de ejemplo para desarrollo local.
+
+## Despliegue en Railway
+
+El repositorio incluye `Dockerfile`, `start-railway.sh` y `railway.json`. Railway construye PHP 8.5 con Apache y la extensión MongoDB; la comprobación de salud usa `/up`.
+
+1. Crea un proyecto Railway y agrega un servicio MongoDB con almacenamiento persistente.
+2. Agrega el repositorio GitHub como servicio de la aplicación.
+3. Configura las variables de la aplicación:
+
+```dotenv
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=<clave base64 generada una sola vez>
+APP_URL=https://<dominio-publico>
+DB_CONNECTION=mongodb
+DB_URI=${{MongoDB.MONGO_URL}}
+DB_DATABASE=crud_nombres
+SESSION_DRIVER=file
+SESSION_SECURE_COOKIE=true
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
+LOG_CHANNEL=stderr
+```
+
+El nombre `MongoDB` de la referencia debe coincidir con el nombre real del servicio de base de datos. Genera `APP_KEY` con `php artisan key:generate --show` y guárdala exclusivamente en las variables de Railway. Consérvala entre despliegues.
+
+4. Despliega y genera un dominio público para la aplicación. MongoDB debe permanecer en la red privada.
+5. Comprueba crear, consultar, editar y eliminar un nombre desde el dominio público.
+
+No se ejecutan migraciones SQL ni se incluyen `.env` o bases locales en la imagen. Los datos se guardan en MongoDB; las sesiones de esta demostración pueden reiniciarse al desplegar. El CRUD es una demostración sin autenticación: cualquier visitante del enlace puede gestionar los nombres.
