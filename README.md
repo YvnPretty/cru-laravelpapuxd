@@ -119,3 +119,6 @@ El nombre `MongoDB` de la referencia debe coincidir con el nombre real del servi
 5. Comprueba crear, consultar, editar y eliminar un nombre desde el dominio público.
 
 No se ejecutan migraciones SQL ni se incluyen `.env` o bases locales en la imagen. Los datos se guardan en MongoDB; las sesiones de esta demostración pueden reiniciarse al desplegar. El CRUD es una demostración sin autenticación: cualquier visitante del enlace puede gestionar los nombres.
+
+## 🚀 Despliegue en Vivo
+El proyecto se encuentra desplegado en Railway: [https://crud-nombres-production.up.railway.app](https://crud-nombres-production.up.railway.app)
