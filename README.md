@@ -48,7 +48,11 @@ php artisan config:clear
 php artisan serve --host=127.0.0.1 --port=8000
 ```
 
-Abre la dirección que imprime Artisan. El listado está en `/` y `/nombres`. Este CRUD crea la colección al insertar el primer documento; no requiere las migraciones SQL heredadas del proyecto original. Las vistas usan estilos integrados y no necesitan compilar Vite para funcionar.
+Abre la dirección que imprime Artisan. El listado está en `/` y `/nombres`. Este CRUD crea la colección al insertar el primer documento; no requiere las migraciones SQL heredadas del proyecto original. Las vistas usan Bootstrap 5.3.2 servido desde public y no necesitan compilar Vite para funcionar.
+
+## Diseño
+
+La interfaz está adaptada de [crudlaravel13](https://github.com/YvnPretty/crudlaravel13), exclusivamente para nombres: tabla paginada de diez registros, botones Ver, Editar y Eliminar, formularios Bootstrap y confirmación antes de borrar. No incluye precio, stock ni gestión de productos.
 
 ## Uso
 
@@ -78,7 +82,7 @@ vendor/bin/pint --dirty --format agent
 composer validate --no-check-publish
 ```
 
-Resultado verificado: **5 pruebas aprobadas, 46 aserciones**. Cada prueba usa una base `crud_nombres_test_` con un sufijo único y la elimina al terminar, sin tocar la base del proyecto. El servidor indicado por `DB_URI` debe permitir crear y eliminar esas bases de prueba.
+Resultado verificado: **6 pruebas aprobadas, 53 aserciones**. Cada prueba usa una base `crud_nombres_test_` con un sufijo único y la elimina al terminar, sin tocar la base del proyecto. El servidor indicado por `DB_URI` debe permitir crear y eliminar esas bases de prueba.
 
 También se verificó en el navegador el recorrido crear → consultar → editar → eliminar. El registro de demostración se eliminó al finalizar.
 

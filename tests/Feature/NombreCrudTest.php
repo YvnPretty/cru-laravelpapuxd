@@ -45,4 +45,16 @@ class NombreCrudTest extends TestCase
             $this->get($url)->assertOk()->assertSee($name)->assertDontSee($name, false);
         }
     }
+
+    public function test_names_are_paginated_ten_at_a_time(): void
+    {
+        for ($i = 1; $i <= 11; $i++) {
+            $nombre = new Nombre;
+            $nombre->nombre = 'Nombre '.str_pad((string) $i, 2, '0', STR_PAD_LEFT);
+            $nombre->save();
+        }
+
+        $this->get('/nombres')->assertOk()->assertSee('Nombre 11')->assertDontSee('Nombre 01')->assertSee('page=2', false);
+        $this->get('/nombres?page=2')->assertOk()->assertSee('Nombre 01')->assertDontSee('Nombre 11');
+    }
 }

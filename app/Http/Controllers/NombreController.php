@@ -11,7 +11,7 @@ class NombreController extends Controller
 {
     public function index(): View
     {
-        return view('index', ['nombres' => Nombre::latest()->get()]);
+        return view('index', ['nombres' => Nombre::orderByDesc('_id')->paginate(10)]);
     }
 
     public function create(): View
@@ -21,12 +21,16 @@ class NombreController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $data = $request->validate(['nombre' => ['required', 'string', 'max:255']]);
+        $data = $request->validate(['nombre' => ['required', 'string', 'max:255']], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser texto.',
+            'nombre.max' => 'El nombre no puede superar 255 caracteres.',
+        ]);
         $nombre = new Nombre;
         $nombre->nombre = $data['nombre'];
         $nombre->save();
 
-        return redirect()->route('nombres.show', $nombre);
+        return redirect()->route('nombres.show', $nombre)->with('success', 'Nombre creado exitosamente.');
     }
 
     public function show(Nombre $nombre): View
@@ -43,17 +47,21 @@ class NombreController extends Controller
 
     public function update(Request $request, Nombre $nombre): RedirectResponse
     {
-        $data = $request->validate(['nombre' => ['required', 'string', 'max:255']]);
+        $data = $request->validate(['nombre' => ['required', 'string', 'max:255']], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser texto.',
+            'nombre.max' => 'El nombre no puede superar 255 caracteres.',
+        ]);
         $nombre->nombre = $data['nombre'];
         $nombre->save();
 
-        return redirect()->route('nombres.show', $nombre);
+        return redirect()->route('nombres.show', $nombre)->with('success', 'Nombre actualizado exitosamente.');
     }
 
     public function destroy(Nombre $nombre): RedirectResponse
     {
         $nombre->delete();
 
-        return redirect()->route('nombres.index');
+        return redirect()->route('nombres.index')->with('success', 'Nombre eliminado exitosamente.');
     }
 }
