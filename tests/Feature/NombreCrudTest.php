@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Nombre;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class NombreCrudTest extends TestCase
 {
-    use LazilyRefreshDatabase;
-
     public function test_nombre_can_be_created_read_updated_and_deleted(): void
     {
         $this->get('/nombres')->assertOk()->assertSee('No hay nombres registrados.');
